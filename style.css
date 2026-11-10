@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --accent-glow: rgba(99, 102, 241, 0.25);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-primary);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%);
+    color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Glassmorphism Card Style */
+.designer-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.designer-card:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 25px 50px -12px var(--accent-glow);
+}
+
+/* Tab and Mode Active States */
+.tab-btn.active, .mode-btn.active {
+    background-color: #6366f1;
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Custom Range Sliders */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #334155;
+    height: 6px;
+    border-radius: 9999px;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #6366f1;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+    transition: transform 0.1s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Custom Color Picker */
+input[type="color"] {
+    -webkit-appearance: none;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="color"]::-webkit-color-swatch {
+    border: 2px solid #475569;
+    border-radius: 8px;
+}
+
+/* Code Scrollbar */
+pre::-webkit-scrollbar { height: 6px; width: 6px; }
+pre::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+pre::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+.copy-feedback {
+    background-color: #10b981 !important;
+    color: white !important;
+}
