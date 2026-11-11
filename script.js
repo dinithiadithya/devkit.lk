@@ -1,93 +1,135 @@
-const radiusRange = document.getElementById('radiusRange');
-const paddingRange = document.getElementById('paddingRange');
-const shadowRange = document.getElementById('shadowRange');
-const bgColor = document.getElementById('bgColor');
+let currentComponent = 'button';
+let currentMode = 'css';
+
+const radiusInput = document.getElementById('radiusInput');
+const paddingInput = document.getElementById('paddingInput');
+const shadowInput = document.getElementById('shadowInput');
+const bgColorPicker = document.getElementById('bgColorPicker');
 
 const radiusVal = document.getElementById('radiusVal');
 const paddingVal = document.getElementById('paddingVal');
 const shadowVal = document.getElementById('shadowVal');
+const colorHexVal = document.getElementById('colorHexVal');
 
-const previewBtn = document.getElementById('previewBtn');
+const previewComponent = document.getElementById('previewComponent');
 const codeOutput = document.getElementById('codeOutput');
-const copyBtn = document.getElementById('copyBtn');
+const bodyTag = document.getElementById('bodyTag');
 
-const tabBtn = document.getElementById('tabBtn');
-const tabCard = document.getElementById('tabCard');
-const tabBadge = document.getElementById('tabBadge');
+function updatePreview() {
+    const radius = radiusInput.value;
+    const padding = paddingInput.value;
+    const shadow = shadowInput.value;
+    const color = bgColorPicker.value;
 
-const modeCss = document.getElementById('modeCss');
-const modeTailwind = document.getElementById('modeTailwind');
+    radiusVal.textContent = radius + 'px';
+    paddingVal.textContent = padding + 'px';
+    shadowVal.textContent = shadow + 'px';
+    colorHexVal.textContent = color;
 
-let currentComponent = 'button';
-let currentMode = 'css';
+    previewComponent.style.borderRadius = radius + 'px';
+    previewComponent.style.padding = padding + 'px ' + (padding * 1.5) + 'px';
+    previewComponent.style.boxShadow = '0px ' + (shadow / 2) + 'px ' + shadow + 'px rgba(0, 0, 0, 0.4)';
+    previewComponent.style.backgroundColor = color;
 
-function updateComponent() {
-    const radius = radiusRange.value;
-    const padding = paddingRange.value;
-    const shadow = shadowRange.value;
-    const bg = bgColor.value;
+    generateCode(radius, padding, shadow, color);
+}
 
-    radiusVal.textContent = radius;
-    paddingVal.textContent = padding;
-    shadowVal.textContent = shadow;
-
-    previewBtn.style.borderRadius = radius + 'px';
-    previewBtn.style.padding = padding + 'px ' + (padding * 1.5) + 'px';
-    previewBtn.style.backgroundColor = bg;
-    previewBtn.style.boxShadow = '0 ' + (shadow / 2) + 'px ' + shadow + 'px rgba(0, 0, 0, 0.4)';
-
-    if (currentComponent === 'button') {
-        previewBtn.textContent = 'Explore Component';
-    } else if (currentComponent === 'card') {
-        previewBtn.textContent = 'Card Component Box';
-    } else if (currentComponent === 'badge') {
-        previewBtn.textContent = 'New Feature Badge';
-    }
-
+function generateCode(radius, padding, shadow, color) {
     if (currentMode === 'css') {
         codeOutput.textContent = 
-`border-radius: ${radius}px;
-padding: ${padding}px ${padding * 1.5}px;
-background-color: ${bg};
-box-shadow: 0 ${Math.round(shadow/2)}px ${shadow}px rgba(0, 0, 0, 0.4);`;
+'.custom-' + currentComponent + ' {\n' +
+'  background-color: ' + color + ';\n' +
+'  border-radius: ' + radius + 'px;\n' +
+'  padding: ' + padding + 'px ' + (padding * 1.5) + 'px;\n' +
+'  box-shadow: 0px ' + Math.round(shadow / 2) + 'px ' + shadow + 'px rgba(0, 0, 0, 0.4);\n' +
+'  color: #ffffff;\n' +
+'  transition: all 0.3s ease;\n' +
+'}';
     } else {
-        codeOutput.textContent = `<div class="rounded-[${radius}px] p-[${padding}px] bg-[${bg}] shadow-[0_${Math.round(shadow/2)}px_${shadow}px_rgba(0,0,0,0.4)]">
-    ${previewBtn.textContent}
-</div>`;
+        codeOutput.textContent = 
+'<div class="bg-[' + color + '] rounded-[' + radius + 'px] px-[' + Math.round(padding * 1.5) + 'px] py-[' + padding + 'px] shadow-[0_' + Math.round(shadow / 2) + 'px_' + shadow + 'px_rgba(0,0,0,0.4)] text-white">\n' +
+'  ' + currentComponent.charAt(0).toUpperCase() + currentComponent.slice(1) + ' Component\n' +
+'</div>';
     }
 }
 
-[tabBtn, tabCard, tabBadge].forEach(tab => {
-    tab.addEventListener('click', (e) => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        currentComponent = e.target.id.replace('tab', '').toLowerCase();
-        updateComponent();
-    });
+function switchTab(component) {
+    currentComponent = component;
+    
+    const btnButton = document.getElementById('tabButton');
+    const btnCard = document.getElementById('tabCard');
+    const btnBadge = document.getElementById('tabBadge');
+
+    if (component === 'button') {
+        btnButton.className = 'tab-btn py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition';
+        btnCard.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        btnBadge.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        previewComponent.textContent = 'Explore Component';
+    } else if (component === 'card') {
+        btnButton.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        btnCard.className = 'tab-btn py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition';
+        btnBadge.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        previewComponent.textContent = 'Pro Card Content Area';
+    } else if (component === 'badge') {
+        btnButton.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        btnCard.className = 'tab-btn py-2 text-sm font-medium rounded-lg text-gray-400 hover:text-white transition';
+        btnBadge.className = 'tab-btn py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white transition';
+        previewComponent.textContent = 'New Feature';
+    }
+
+    updatePreview();
+}
+
+function setMode(mode) {
+    currentMode = mode;
+    const btnCss = document.getElementById('modeCss');
+    const btnTailwind = document.getElementById('modeTailwind');
+
+    if (mode === 'css') {
+        btnCss.className = 'px-3 py-1 text-xs font-semibold rounded-md bg-indigo-600 text-white transition';
+        btnTailwind.className = 'px-3 py-1 text-xs font-semibold rounded-md text-gray-400 hover:text-white transition';
+    } else {
+        btnTailwind.className = 'px-3 py-1 text-xs font-semibold rounded-md bg-indigo-600 text-white transition';
+        btnCss.className = 'px-3 py-1 text-xs font-semibold rounded-md text-gray-400 hover:text-white transition';
+    }
+    updatePreview();
+}
+
+function setThemeColor(hexColor) {
+    bgColorPicker.value = hexColor;
+    updatePreview();
+}
+
+function copyCode() {
+    navigator.clipboard.writeText(codeOutput.textContent);
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.textContent = '✅ Copied!';
+    setTimeout(function() {
+        copyBtn.textContent = '📋 Copy Code';
+    }, 2000);
+}
+
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeText = document.getElementById('themeText');
+
+themeToggle.addEventListener('click', function() {
+    if (bodyTag.classList.contains('bg-gray-900')) {
+        bodyTag.classList.remove('bg-gray-900', 'text-white');
+        bodyTag.classList.add('bg-gray-100', 'text-gray-900');
+        themeIcon.textContent = '☀️';
+        themeText.textContent = 'Light Mode';
+    } else {
+        bodyTag.classList.remove('bg-gray-100', 'text-gray-900');
+        bodyTag.classList.add('bg-gray-900', 'text-white');
+        themeIcon.textContent = '🌙';
+        themeText.textContent = 'Dark Mode';
+    }
 });
 
-[modeCss, modeTailwind].forEach(mode => {
-    mode.addEventListener('click', (e) => {
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        currentMode = e.target.id === 'modeCss' ? 'css' : 'tailwind';
-        updateComponent();
-    });
-});
+radiusInput.addEventListener('input', updatePreview);
+paddingInput.addEventListener('input', updatePreview);
+shadowInput.addEventListener('input', updatePreview);
+bgColorPicker.addEventListener('input', updatePreview);
 
-[radiusRange, paddingRange, shadowRange, bgColor].forEach(input => {
-    input.addEventListener('input', updateComponent);
-});
-
-copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(codeOutput.textContent).then(() => {
-        copyBtn.textContent = 'Copied! 🎉';
-        copyBtn.classList.add('copy-feedback');
-        setTimeout(() => {
-            copyBtn.textContent = 'Copy Code';
-            copyBtn.classList.remove('copy-feedback');
-        }, 2000);
-    });
-});
-
-updateComponent();
+updatePreview();
