@@ -9,6 +9,7 @@
 <body id="bodyTag" class="bg-gray-900 text-white min-h-screen transition-colors duration-300 font-sans">
 
     <!-- Header Section -->
+    
     <header class="p-6 border-b border-gray-800 flex justify-between items-center max-w-7xl mx-auto">
         <div>
             <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
@@ -17,11 +18,18 @@
             <p class="text-xs text-gray-400 mt-1">Pro UI Component & CSS Generator</p>
         </div>
         
-        <!-- Dark / Light Mode Toggle -->
-        <button id="themeToggle" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-sm font-medium flex items-center gap-2 transition">
-            <span id="themeIcon">🌙</span>
-            <span id="themeText">Dark Mode</span>
-        </button>
+        <div class="flex items-center gap-3">
+            <!-- අලුතින් දාන About Page Button එක -->
+            <a href="about.html" class="px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-lg text-sm font-medium transition">
+                ℹ️ About & Benefits
+            </a>
+
+            <!-- Dark / Light Mode Toggle -->
+            <button id="themeToggle" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-sm font-medium flex items-center gap-2 transition">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+        </div>
     </header>
 
     <!-- Main Container -->
