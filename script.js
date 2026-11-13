@@ -5,6 +5,8 @@ const radiusInput = document.getElementById('radiusInput');
 const paddingInput = document.getElementById('paddingInput');
 const shadowInput = document.getElementById('shadowInput');
 const bgColorPicker = document.getElementById('bgColorPicker');
+const borderStyleSelect = document.getElementById('borderStyleSelect');
+const textSizeSelect = document.getElementById('textSizeSelect');
 
 const radiusVal = document.getElementById('radiusVal');
 const paddingVal = document.getElementById('paddingVal');
@@ -14,12 +16,15 @@ const colorHexVal = document.getElementById('colorHexVal');
 const previewComponent = document.getElementById('previewComponent');
 const codeOutput = document.getElementById('codeOutput');
 const bodyTag = document.getElementById('bodyTag');
+const toast = document.getElementById('toastNotification');
 
 function updatePreview() {
     const radius = radiusInput.value;
     const padding = paddingInput.value;
     const shadow = shadowInput.value;
     const color = bgColorPicker.value;
+    const borderStyle = borderStyleSelect.value;
+    const textSize = textSizeSelect.value;
 
     radiusVal.textContent = radius + 'px';
     paddingVal.textContent = padding + 'px';
@@ -30,11 +35,15 @@ function updatePreview() {
     previewComponent.style.padding = padding + 'px ' + (padding * 1.5) + 'px';
     previewComponent.style.boxShadow = '0px ' + (shadow / 2) + 'px ' + shadow + 'px rgba(0, 0, 0, 0.4)';
     previewComponent.style.backgroundColor = color;
+    previewComponent.style.borderWidth = borderStyle === 'none' ? '0px' : '2px';
+    previewComponent.style.borderStyle = borderStyle;
+    previewComponent.style.borderColor = '#ffffff';
+    previewComponent.style.fontSize = textSize;
 
-    generateCode(radius, padding, shadow, color);
+    generateCode(radius, padding, shadow, color, borderStyle, textSize);
 }
 
-function generateCode(radius, padding, shadow, color) {
+function generateCode(radius, padding, shadow, color, borderStyle, textSize) {
     if (currentMode === 'css') {
         codeOutput.textContent = 
 '.custom-' + currentComponent + ' {\n' +
@@ -42,12 +51,14 @@ function generateCode(radius, padding, shadow, color) {
 '  border-radius: ' + radius + 'px;\n' +
 '  padding: ' + padding + 'px ' + (padding * 1.5) + 'px;\n' +
 '  box-shadow: 0px ' + Math.round(shadow / 2) + 'px ' + shadow + 'px rgba(0, 0, 0, 0.4);\n' +
+'  border: ' + (borderStyle === 'none' ? 'none' : '2px ' + borderStyle + ' #ffffff') + ';\n' +
+'  font-size: ' + textSize + ';\n' +
 '  color: #ffffff;\n' +
 '  transition: all 0.3s ease;\n' +
 '}';
     } else {
         codeOutput.textContent = 
-'<div class="bg-[' + color + '] rounded-[' + radius + 'px] px-[' + Math.round(padding * 1.5) + 'px] py-[' + padding + 'px] shadow-[0_' + Math.round(shadow / 2) + 'px_' + shadow + 'px_rgba(0,0,0,0.4)] text-white">\n' +
+'<div class="bg-[' + color + '] rounded-[' + radius + 'px] px-[' + Math.round(padding * 1.5) + 'px] py-[' + padding + 'px] shadow-[0_' + Math.round(shadow / 2) + 'px_' + shadow + 'px_rgba(0,0,0,0.4)] border-2 border-' + borderStyle + ' text-[' + textSize + '] text-white">\n' +
 '  ' + currentComponent.charAt(0).toUpperCase() + currentComponent.slice(1) + ' Component\n' +
 '</div>';
     }
@@ -100,32 +111,56 @@ function setThemeColor(hexColor) {
     updatePreview();
 }
 
+function applyPreset(radius, padding, shadow, color) {
+    radiusInput.value = radius;
+    paddingInput.value = padding;
+    shadowInput.value = shadow;
+    bgColorPicker.value = color;
+    updatePreview();
+}
+
 function copyCode() {
     navigator.clipboard.writeText(codeOutput.textContent);
+    
+    // Toast Notification Animation
+    if (toast) {
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        
+        setTimeout(function() {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('translate-y-20', 'opacity-0');
+        }, 2500);
+    }
+
     const copyBtn = document.getElementById('copyBtn');
-    copyBtn.textContent = '✅ Copied!';
-    setTimeout(function() {
-        copyBtn.textContent = '📋 Copy Code';
-    }, 2000);
+    if (copyBtn) {
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(function() {
+            copyBtn.textContent = '📋 Copy Code';
+        }, 2000);
+    }
 }
 
 const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
 const themeText = document.getElementById('themeText');
 
-themeToggle.addEventListener('click', function() {
-    if (bodyTag.classList.contains('bg-gray-900')) {
-        bodyTag.classList.remove('bg-gray-900', 'text-white');
-        bodyTag.classList.add('bg-gray-100', 'text-gray-900');
-        themeIcon.textContent = '☀️';
-        themeText.textContent = 'Light Mode';
-    } else {
-        bodyTag.classList.remove('bg-gray-100', 'text-gray-900');
-        bodyTag.classList.add('bg-gray-900', 'text-white');
-        themeIcon.textContent = '🌙';
-        themeText.textContent = 'Dark Mode';
-    }
-});
+if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+        if (bodyTag.classList.contains('bg-gray-900')) {
+            bodyTag.classList.remove('bg-gray-900', 'text-white');
+            bodyTag.classList.add('bg-gray-100', 'text-gray-900');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light Mode';
+        } else {
+            bodyTag.classList.remove('bg-gray-100', 'text-gray-900');
+            bodyTag.classList.add('bg-gray-900', 'text-white');
+            themeIcon.textContent = '🌙';
+            themeText.textContent = 'Dark Mode';
+        }
+    });
+}
 
 radiusInput.addEventListener('input', updatePreview);
 paddingInput.addEventListener('input', updatePreview);

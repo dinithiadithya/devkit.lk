@@ -98,6 +98,51 @@
                     </div>
                 </div>
             </div>
+            <!-- Quick UI Component Presets -->
+            <div class="mt-6 pt-6 border-t border-gray-700/50">
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Quick Presets</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="applyPreset(12, 16, 20, '#4f46e5')" class="p-2 text-xs font-medium bg-gray-900/60 hover:bg-indigo-600/30 border border-gray-700 rounded-lg transition text-left text-gray-300">
+                        🔵 Modern Primary
+                    </button>
+                    <button onclick="applyPreset(25, 20, 25, '#059669')" class="p-2 text-xs font-medium bg-gray-900/60 hover:bg-emerald-600/30 border border-gray-700 rounded-lg transition text-left text-gray-300">
+                        🟢 Rounded Success
+                    </button>
+                    <button onclick="applyPreset(4, 10, 10, '#e11d48')" class="p-2 text-xs font-medium bg-gray-900/60 hover:bg-rose-600/30 border border-gray-700 rounded-lg transition text-left text-gray-300">
+                        🔴 Sharp Danger
+                    </button>
+                    <button onclick="applyPreset(16, 24, 30, '#9333ea')" class="p-2 text-xs font-medium bg-gray-900/60 hover:bg-purple-600/30 border border-gray-700 rounded-lg transition text-left text-gray-300">
+                        🟣 Soft Glow
+                    </button>
+                </div>
+            </div>
+            <!-- Extra CSS Customizer (Border Style & Text Size) -->
+            <div class="mt-6 pt-6 border-t border-gray-700/50 space-y-4">
+                <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Extra Properties</label>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <!-- Border Style Selector -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Border Style</label>
+                        <select id="borderStyleSelect" onchange="updatePreview()" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                            <option value="solid">Solid</option>
+                            <option value="dashed">Dashed</option>
+                            <option value="dotted">Dotted</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+
+                    <!-- Text Size Selector -->
+                    <div>
+                        <label class="block text-xs font-medium text-gray-300 mb-1">Text Size</label>
+                        <select id="textSizeSelect" onchange="updatePreview()" class="w-full bg-gray-900 border border-gray-700 rounded-lg p-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+                            <option value="14px">Small (14px)</option>
+                            <option value="16px" selected>Normal (16px)</option>
+                            <option value="18px">Large (18px)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- Right Column: Live Preview & Code Generator -->
@@ -130,6 +175,11 @@
 
         </section>
     </main>
+    <!-- Success Toast Notification Popup -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <span>✅</span>
+        <span class="text-sm font-medium">Code copied to clipboard successfully!</span>
+    </div>
 
     <script src="script.js"></script>
 </body>
